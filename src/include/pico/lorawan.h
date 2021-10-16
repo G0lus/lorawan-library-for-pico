@@ -13,7 +13,7 @@
 
 #include "LoRaMac.h"
 
-struct lorawan_sx1276_settings {
+struct lorawan_sx12xx_settings {
     struct {
         spi_inst_t* inst;
         uint mosi;
@@ -22,8 +22,11 @@ struct lorawan_sx1276_settings {
         uint nss;
     } spi;
     uint reset;
+    uint busy;
     uint dio0;
     uint dio1;
+    uint txen;
+    uint rxen;
 };
 
 struct lorawan_abp_settings {
@@ -42,9 +45,9 @@ struct lorawan_otaa_settings {
 
 const char* lorawan_default_dev_eui(char* dev_eui);
 
-int lorawan_init_abp(const struct lorawan_sx1276_settings* sx1276_settings, LoRaMacRegion_t region, const struct lorawan_abp_settings* abp_settings);
+int lorawan_init_abp(const struct lorawan_sx12xx_settings* sx12xx_settings, LoRaMacRegion_t region, const struct lorawan_abp_settings* abp_settings);
 
-int lorawan_init_otaa(const struct lorawan_sx1276_settings* sx1276_settings, LoRaMacRegion_t region, const struct lorawan_otaa_settings* otaa_settings);
+int lorawan_init_otaa(const struct lorawan_sx12xx_settings* sx12xx_settings, LoRaMacRegion_t region, const struct lorawan_otaa_settings* otaa_settings);
 
 int lorawan_join();
 

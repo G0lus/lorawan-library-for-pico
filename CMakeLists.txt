@@ -35,22 +35,9 @@ target_sources(pico_loramac_node INTERFACE
     ${LORAMAC_NODE_PATH}/src/apps/LoRaMac/common/NvmDataMgmt.c
 
     ${LORAMAC_NODE_PATH}/src/mac/region/Region.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionAS923.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionAU915.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionBaseUS.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionCN470.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionCN470A20.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionCN470A26.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionCN470B20.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionCN470B26.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionCN779.c
     ${LORAMAC_NODE_PATH}/src/mac/region/RegionCommon.c
     ${LORAMAC_NODE_PATH}/src/mac/region/RegionEU433.c
     ${LORAMAC_NODE_PATH}/src/mac/region/RegionEU868.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionIN865.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionKR920.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionRU864.c
-    ${LORAMAC_NODE_PATH}/src/mac/region/RegionUS915.c
     ${LORAMAC_NODE_PATH}/src/mac/LoRaMac.c
     ${LORAMAC_NODE_PATH}/src/mac/LoRaMacAdr.c
     ${LORAMAC_NODE_PATH}/src/mac/LoRaMacClassB.c
@@ -65,7 +52,9 @@ target_sources(pico_loramac_node INTERFACE
     ${LORAMAC_NODE_PATH}/src/peripherals/soft-se/soft-se-hal.c
     ${LORAMAC_NODE_PATH}/src/peripherals/soft-se/soft-se.c
 
-    ${LORAMAC_NODE_PATH}/src/radio/sx1276/sx1276.c
+    # ${LORAMAC_NODE_PATH}/src/radio/sx1276/sx1276.c
+    ${LORAMAC_NODE_PATH}/src/radio/sx126x/sx126x.c
+    ${LORAMAC_NODE_PATH}/src/radio/sx126x/radio.c
 
     ${LORAMAC_NODE_PATH}/src/system/delay.c
     ${LORAMAC_NODE_PATH}/src/system/gpio.c
@@ -79,7 +68,8 @@ target_sources(pico_loramac_node INTERFACE
     ${CMAKE_CURRENT_LIST_DIR}/src/boards/rp2040/gpio-board.c
     ${CMAKE_CURRENT_LIST_DIR}/src/boards/rp2040/rtc-board.c
     ${CMAKE_CURRENT_LIST_DIR}/src/boards/rp2040/spi-board.c
-    ${CMAKE_CURRENT_LIST_DIR}/src/boards/rp2040/sx1276-board.c
+    # ${CMAKE_CURRENT_LIST_DIR}/src/boards/rp2040/sx1276-board.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/boards/rp2040/sx126x-board.c
 )
 
 target_include_directories(pico_loramac_node INTERFACE
@@ -99,16 +89,7 @@ target_link_libraries(pico_loramac_node INTERFACE pico_stdlib pico_unique_id har
 
 target_compile_definitions(pico_loramac_node INTERFACE -DSOFT_SE)
 target_compile_definitions(pico_loramac_node INTERFACE -DREGION_EU868)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_US915)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_CN779)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_EU433)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_AU915)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_AS923)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_CN470)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_KR920)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_IN865)
-target_compile_definitions(pico_loramac_node INTERFACE -DREGION_RU864)
-target_compile_definitions(pico_loramac_node INTERFACE -DACTIVE_REGION=LORAMAC_REGION_US915)
+target_compile_definitions(pico_loramac_node INTERFACE -DACTIVE_REGION=LORAMAC_REGION_EU868)
 
 add_library(pico_lorawan INTERFACE)
 
@@ -121,8 +102,4 @@ target_include_directories(pico_lorawan INTERFACE
 )
 
 target_link_libraries(pico_lorawan INTERFACE pico_loramac_node)
-
-add_subdirectory("examples/default_dev_eui")
-add_subdirectory("examples/hello_abp")
-add_subdirectory("examples/hello_otaa")
-add_subdirectory("examples/otaa_temperature_led")
+target_compile_definitions(pico_lorawan INTERFACE -Dsx126x)
